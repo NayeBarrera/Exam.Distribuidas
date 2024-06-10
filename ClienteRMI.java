@@ -5,7 +5,7 @@ import java.util.Scanner; // Importa la clase Locale
 public class ClienteRMI {
     public static void main(String[] args) {
         try {
-             ConversorRemoto stub = (ConversorRemoto) Naming.lookup("localhost");
+             ConversorRemoto stub = (ConversorRemoto) Naming.lookup("localhost", 3000);
             
             // Configura el escáner para usar el punto como separador decimal
             Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
