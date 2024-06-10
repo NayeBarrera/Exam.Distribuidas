@@ -5,12 +5,13 @@ public class ServidorRMI {
     public static void main(String[] args) {
         try {
             LocateRegistry.createRegistry(1099);
-            ConversorRemotoImpl objetoRemoto = new ConversorRemotoImpl();
-            Naming.rebind("ConversorRemoto", objetoRemoto);
-            System.out.println("Servidor RMI listo...");
+            ConversorRemotoImpl obj = new ConversorRemotoImpl();
+            Naming.rebind("//localhost/ConversorRemoto", obj);
+            System.out.println("Servidor remoto iniciado.");
         } catch (Exception e) {
-            System.out.println("Error en el servidor RMI: " + e.getMessage());
+            System.err.println("Excepción del servidor: " + e.toString());
             e.printStackTrace();
         }
     }
 }
+    

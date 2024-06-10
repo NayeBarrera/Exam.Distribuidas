@@ -1,13 +1,17 @@
 # Define la imagen base de Java
 FROM openjdk:latest
-# Copia los archivos al contenedor
-COPY ConversorRemoto.java .
-COPY ConversorRemotoImpl.java .
-COPY ServidorRMI.java .
-COPY ClienteRMI.java .
+
+# Crea un directorio para la aplicación
+WORKDIR /app
+
+# Copia los archivos Java al contenedor
+COPY . /app
+
 # Compila los archivos Java
-RUN javac *.java
+RUN javac ConversorRemoto.java ConversorRemotoImpl.java ServidorRMI.java ClienteRMI.java
+
 # Expone el puerto utilizado por RMI
-EXPOSE 3000
-# Inicia el registro RMI y el servidor RMI al ejecutar el contenedor
+EXPOSE 1099
+
+# Inicia el servidor RMI al ejecutar el contenedor
 CMD ["java", "ServidorRMI"]

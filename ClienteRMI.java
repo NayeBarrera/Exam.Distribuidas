@@ -1,49 +1,39 @@
 import java.rmi.Naming;
-import java.util.Locale;
-import java.util.Scanner; // Importa la clase Locale
+import java.util.Scanner;
 
 public class ClienteRMI {
     public static void main(String[] args) {
         try {
-             ConversorRemoto stub = (ConversorRemoto) Naming.lookup("localhost", 3000);
-            
-            // Configura el escáner para usar el punto como separador decimal
-            Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
-
-            int opcion;
-            do {
-                System.out.println("Elija una opción:");
-                System.out.println("1. Convertir de Fahrenheit a Celsius");
-                System.out.println("2. Convertir de Celsius a Fahrenheit");
+            ConversorRemoto conversor = (ConversorRemoto) Naming.lookup("//localhost/ConversorRemoto");
+            Scanner scanner = new Scanner(System.in);
+            while (true) {
+                System.out.println("Elija una opcion:");
+                System.out.println("1. Fahrenheit a Celsius");
+                System.out.println("2. Celsius a Fahrenheit");
                 System.out.println("3. Salir");
-                opcion = scanner.nextInt();
-
-                double temperatura;
-                double resultado;
-
+                int opcion = scanner.nextInt();
+                if (opcion == 3) {  
+                    break;
+                }
+                System.out.print("Ingrese la temperatura: ");
+                double temperatura = scanner.nextDouble();
+                double resultado = 0;
                 switch (opcion) {
                     case 1:
-                        System.out.println("Ingrese la temperatura en Fahrenheit:");
-                        temperatura = scanner.nextDouble();
-                        resultado = stub.fahrenheitToCelsius(temperatura);
-                        System.out.println("Resultado: " + resultado + " ºC");
+                        resultado = conversor.fahrenheitACelsius(temperatura);
+                        System.out.println("Resultado: " + resultado + " C");
                         break;
                     case 2:
-                        System.out.println("Ingrese la temperatura en Celsius:");
-                        temperatura = scanner.nextDouble();
-                        resultado = stub.celsiusToFahrenheit(temperatura);
-                        System.out.println("Resultado: " + resultado + " ºF");
-                        break;
-                    case 3:
-                        System.out.println("Saliendo...");
+                        resultado = conversor.celsiusAFahrenheit(temperatura);
+                        System.out.println("Resultado: " + resultado + " F");
                         break;
                     default:
-                        System.out.println("Opción inválida. Por favor, seleccione nuevamente.");
+                        System.out.println("No hay esa opción");
                 }
-            } while (opcion != 3);
-
+            }
+            scanner.close();
         } catch (Exception e) {
-            System.out.println("Error en el cliente RMI: " + e.getMessage());
+            System.err.println("Excepción del cliente: " + e.toString());
             e.printStackTrace();
         }
     }
